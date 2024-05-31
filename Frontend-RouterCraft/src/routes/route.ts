@@ -5,7 +5,14 @@ import Welcome from "../pages/Welcome";
 import Error from "../pages/error/404";
 import BaseDashBoard from "../pages/layouts/BaseDashBoard";
 
-export const routes = [
+export interface RouteInterface {
+    path: string;
+    element: () => JSX.Element;
+    children?: RouteInterface[];
+    errorElement?: () => JSX.Element;
+}
+
+export const routes : RouteInterface[] = [
     {
         path: "/",
         element: Welcome,
@@ -13,22 +20,22 @@ export const routes = [
         
     },
     {
-        path: "register",
-        element: Register
+        path: "/register",
+        element: Register,
         
     },
     {
-        path: "login",
+        path: "/login",
         element: Login
     },
     {
-        path: "dashboard",
+        path: "/dashboard",
         element: BaseDashBoard,
         children: [
             {
-                path: "/",
-                element: Customers
+                path: "",
+                element: Customers,
             },
-        ]
-    }
+        ],
+    },
 ]
