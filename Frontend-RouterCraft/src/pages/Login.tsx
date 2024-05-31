@@ -1,8 +1,87 @@
+import * as Yup from "yup";
+import { ApiInstance } from "../Services/Api";
+import { Formik } from "formik";
+import Input from "../components/input/InputLabel";
+import Button from "../components/button/InputButton";
+
 const Login = () => {
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+
+  const onSubmit = (values: typeof initialValues) => {
+    ApiInstance.post("/auth/login", values)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .email("El correo no es valido")
+      .required("El correo es obligatorio"),
+    password: Yup.string()
+      .min(5, "La contraseña tiene que tener mas de 5 digitos")
+      .required("La contraseña es obligatoria"),
+  });
+
   return (
-    <>
-      <h1>Login</h1>
-    </>
+    <section className="bg-slate-500">
+      <div className="container mx-auto py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex items-center justify-center">
+            <img
+              src="https://source.unsplash.com/1600x900/?technology"
+              alt="technology"
+              className="object-cover h-96 w-full rounded-lg"
+            />
+          </div>
+          <div className="flex items-center justify-center">
+            <div className="max-w-md w-full space-y-8">
+              <div>
+                <h2 className="text-3xl font-bold text-center text-white">
+                  Login
+                </h2>
+              </div>
+              <Formik
+                initialValues={initialValues}
+                onSubmit={onSubmit}
+                validationSchema={validationSchema}
+              >
+                {({ values, errors, handleChange, handleSubmit }) => (
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <Input
+                      label="Correo"
+                      type="email"
+                      name="email"
+                      placeholder="example@gmail.com"
+                      error={errors.email}
+                      onChange={handleChange}
+                      value={values.email}
+                    />
+                    <Input
+                      label="Contraseña"
+                      type="password"
+                      name="password"
+                      placeholder="**************"
+                      error={errors.password}
+                      onChange={handleChange}
+                      value={values.password}
+                    />
+
+                    <Button type="submit" value="Registrar" />
+                  </form>
+                )}
+              </Formik>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

@@ -32,7 +32,7 @@ const Register = () => {
     password: Yup.string()
       .min(5, "La contraseña tiene que tener mas de 5 digitos")
       .required("La contraseña es obligatoria"),
-      password_confirmation: Yup.string()
+    password_confirmation: Yup.string()
       .oneOf([Yup.ref("password")], "Las contraseñas no coinciden")
       .required("La confirmacion de la contraseña es obligatoria"),
   });
@@ -60,12 +60,7 @@ const Register = () => {
                 onSubmit={onSubmit}
                 validationSchema={validationSchema}
               >
-                {({
-                  values,
-                  errors,
-                  handleChange,
-                  handleSubmit,
-                }) => (
+                {({ values, errors, handleChange, handleSubmit }) => (
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <Input
                       label="Nombre"
