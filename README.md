@@ -25,7 +25,7 @@ RouterCraft is a route mapping project built with Laravel and React.
 2. Install the backend dependencies:
 
     ```bash
-    cd RouterCraft/backend
+    cd RouterCraft/Backend-RouterCraft
     composer install
     ```
 
@@ -40,7 +40,7 @@ RouterCraft is a route mapping project built with Laravel and React.
 4. Install the frontend dependencies:
 
     ```bash
-    cd ../frontend
+    cd ../Frontend-RouterCraft
     npm install
     ```
 
@@ -53,7 +53,7 @@ RouterCraft is a route mapping project built with Laravel and React.
 
 ## Usage
 
-1. Open your browser and navigate to `http://localhost:3000`.
+1. Open your browser and navigate to `http://localhost:5173`.
 2. Sign up or log in to access the route mapping interface.
 3. Start mapping your routes and enjoy the features of RouterCraft!
 
