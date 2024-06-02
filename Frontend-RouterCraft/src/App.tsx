@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { routes, RouteInterface } from "./routes/route";
 
+
 function App() {
   const router = createBrowserRouter(routes.map((route:RouteInterface) => ({
     path: route.path,

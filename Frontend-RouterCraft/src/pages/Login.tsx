@@ -13,10 +13,10 @@ const Login = () => {
   const onSubmit = (values: typeof initialValues) => {
     ApiInstance.post("/auth/login", values)
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
       });
   };
 
@@ -30,18 +30,11 @@ const Login = () => {
   });
 
   return (
-    <section className="bg-slate-500">
-      <div className="container mx-auto py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <section className="bg-slate-500 w-full h-full min-h-screen">
+      <div className="container m-auto py-[10%] max-w-[40%]">
+        <div className="grid grid-cols-1 h-full md:grid-cols-2 gap-4">
           <div className="flex items-center justify-center">
-            <img
-              src="https://source.unsplash.com/1600x900/?technology"
-              alt="technology"
-              className="object-cover h-96 w-full rounded-lg"
-            />
-          </div>
-          <div className="flex items-center justify-center">
-            <div className="max-w-md w-full space-y-8">
+            <div className="  max-w-md w-full space-y-8">
               <div>
                 <h2 className="text-3xl font-bold text-center text-white">
                   Login

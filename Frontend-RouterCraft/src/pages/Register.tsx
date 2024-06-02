@@ -15,10 +15,10 @@ const Register = () => {
   const onSubmit = (values: typeof initialValues) => {
     ApiInstance.post("/auth/register", values)
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
       });
   };
 
@@ -38,30 +38,28 @@ const Register = () => {
   });
 
   return (
-    <section className="bg-slate-500">
-      <div className="container mx-auto py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex items-center justify-center">
-            <img
-              src="https://source.unsplash.com/1600x900/?technology"
-              alt="technology"
-              className="object-cover h-96 w-full rounded-lg"
-            />
-          </div>
-          <div className="flex items-center justify-center">
-            <div className="max-w-md w-full space-y-8">
-              <div>
-                <h2 className="text-3xl font-bold text-center text-white">
-                  Register
-                </h2>
-              </div>
-              <Formik
+    <section className="min-h-screen " style={{backgroundImage: `url('../assets/login.jpg')`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat'}}>
+      <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-[5%] lg:px-8 bg-sky-500 ">
+        <div className="rounded-lg h-full w-full">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <img
+            className="mx-auto h-10 w-auto"
+            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+            alt="Logo"
+          />
+          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+            Register
+          </h2>
+        </div>
+
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <Formik
                 initialValues={initialValues}
                 onSubmit={onSubmit}
                 validationSchema={validationSchema}
               >
                 {({ values, errors, handleChange, handleSubmit }) => (
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form onSubmit={handleSubmit} className="space-y-6">
                     <Input
                       label="Nombre"
                       type="text"
@@ -103,8 +101,9 @@ const Register = () => {
                   </form>
                 )}
               </Formik>
-            </div>
-          </div>
+
+        
+        </div>
         </div>
       </div>
     </section>
