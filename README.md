@@ -48,7 +48,7 @@ RouterCraft is a route mapping project built with Laravel and React.
 
     ```bash
     php artisan serve
-    npm start
+    npm run dev
     ```
 
 ## Usage

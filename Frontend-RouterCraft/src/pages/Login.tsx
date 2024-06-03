@@ -10,14 +10,15 @@ const Login = () => {
     password: "",
   };
 
-  const onSubmit = (values: typeof initialValues) => {
-    ApiInstance.post("/auth/login", values)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
+  const onSubmit = async (values: typeof initialValues) => {
+    try {
+      const response = await ApiInstance.post("/auth/login", values)
+      console.log(response);
+    } catch (error:any) {
+      if(error.response){
+        console.log(error.response.data)
+      }
+    }
   };
 
   const validationSchema = Yup.object({
