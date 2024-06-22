@@ -38,8 +38,8 @@ const Login = () => {
 
   return (
     <section className="container bg-slate-500 h-full min-h-screen grid grid-cols-1 sm:grid-cols-2 content-center">
-      <div className="w-full h-full">
-        <img className="" src="src/assets/login.jpg" alt="login" />
+      <div className="w-full h-full flex">
+        <img className="items-center" src="src/assets/login.jpg" alt="login" />
       </div>
       <div className="w-full mx-auto my-auto py-[15%] max-w-[60%]">
         <div className="grid grid-cols-1 gap-6 content-center h-full p-5 ">

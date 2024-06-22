@@ -1,9 +1,13 @@
+import BaseDashBoard from "./layouts/BaseDashBoard";
+import Mapa from "./layouts/Map";
+
 const Customers = () => {  
     return (
-        <div>
-        <h1>Customers</h1>
-        <p>Customers page content</p>
-        </div>
+        <>
+            <BaseDashBoard page="Customers" >
+                <p>Customers</p>
+            </BaseDashBoard>
+        </>
     );
 };
 
