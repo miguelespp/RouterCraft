@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -17,7 +15,6 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password)
-        
         ]);
 
         $token = JWTAuth::fromUser($user);
@@ -42,4 +39,18 @@ class AuthController extends Controller
             'token' => $token
         ], 200);
     }
+
+//    function getUser(\Illuminate\Http\Request $request)
+//    {
+//
+//    }
+//
+//    public function logout()
+//    {
+//        \auth()->logout();
+//        return response()->json([
+//            'succes' => true,
+//            'message' => 'Successfully logged out',
+//        ], 200);
+//    }
 }
