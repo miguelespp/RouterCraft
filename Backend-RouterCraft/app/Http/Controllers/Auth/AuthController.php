@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -45,12 +46,15 @@ class AuthController extends Controller
 //
 //    }
 //
-//    public function logout()
-//    {
-//        \auth()->logout();
-//        return response()->json([
-//            'succes' => true,
-//            'message' => 'Successfully logged out',
-//        ], 200);
-//    }
+    public function logout(Request $request)
+    {
+        $authorizationHeader = $request->header('Authorization');
+        $token = str_replace('Bearer ', '', $authorizationHeader);
+        JWTAuth::invalidate($token);
+        return response()->json([
+            'succes' => true,
+            'message' => 'Successfully logged out',
+            'token' => $token
+        ], 200);
+    }
 }
