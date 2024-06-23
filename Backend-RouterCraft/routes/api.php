@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Middleware\JwtMiddleware;
+use App\Http\Controllers\RouteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
 
@@ -14,7 +14,10 @@ Route::prefix('auth')->group(function(){
     Route::post('login', [AuthController::class, 'login']);
 });
 
-Route::middleware([JwtMiddleware::class])->group(function(){
+Route::middleware('jwt.verify')->group(function(){
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('users', [UserController::class, 'index']);
+    Route::delete('user', [UserController::class, 'destroy']);
+
+    Route::post('routes', [RouteController::class, 'store']);
 });
