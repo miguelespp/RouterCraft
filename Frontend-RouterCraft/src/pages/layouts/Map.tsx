@@ -12,10 +12,10 @@ const center = {
 };
 
 const Mapa: React.FC = () => {
-  // const key = process.env.APP_GOOGLE_MAPS_API_KEY
+  const key = process.env.APP_GOOGLE_MAPS_API_KEY;
   return (
     <div className="flex justify-center items-center h-screen">
-      <LoadScript googleMapsApiKey={/* Tu Key*/}>
+      <LoadScript googleMapsApiKey={key || ''}>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
