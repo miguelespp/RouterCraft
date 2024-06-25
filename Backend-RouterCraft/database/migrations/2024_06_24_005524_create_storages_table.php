@@ -11,9 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('routes', function (Blueprint $table) {
+        Schema::create('storages', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string('name')->nullable();
+            $table->integer('latitude');
+            $table->integer('longitude');
+            $table->unsignedBigInteger('operation_id');
+            $table->foreign('operation_id')->references('id')->on('operations')->onDelete('cascade');
         });
     }
 
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('routes');
+        Schema::dropIfExists('storages');
     }
 };

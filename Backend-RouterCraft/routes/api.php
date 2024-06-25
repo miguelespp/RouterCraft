@@ -4,6 +4,8 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\RouteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\OperationController;
+use App\Http\Controllers\VehicleController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -18,6 +20,14 @@ Route::middleware('jwt.verify')->group(function(){
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('users', [UserController::class, 'index']);
     Route::delete('user', [UserController::class, 'destroy']);
+    
+    //Manejar operaciones
+    Route::get('operations', [OperationController::class, 'index']);
+    Route::post('operations', [OperationController::class, 'store']);
 
+    //Manejar vehiculos
+    Route::post('vehicles', [VehicleController::class, 'store']);
+
+    //Falta manejar rutas
     Route::post('routes', [RouteController::class, 'store']);
 });
