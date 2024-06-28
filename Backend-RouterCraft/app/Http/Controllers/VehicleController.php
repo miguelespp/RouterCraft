@@ -9,7 +9,7 @@ class VehicleController extends Controller
 {
     public function index(Request $request)
     {
-        $vehicles = Vehicle::all();
+        $vehicles = Vehicle::where('user_id', $request->user->id)->get();
         return response()->json(compact('vehicles'), 200);
     }
 

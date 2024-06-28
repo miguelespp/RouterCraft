@@ -24,10 +24,12 @@ Route::middleware('jwt.verify')->group(function(){
     //Manejar operaciones
     Route::get('operations', [OperationController::class, 'index']);
     Route::post('operations', [OperationController::class, 'store']);
+    Route::post('operations/routes', [OperationController::class, 'getRoutes']);
 
     //Manejar vehiculos
+    Route::get('vehicles', [VehicleController::class, 'index']);
     Route::post('vehicles', [VehicleController::class, 'store']);
 
     //Falta manejar rutas
-    Route::post('routes', [RouteController::class, 'store']);
+    // Route::post('routes', [RouteController::class, 'store']);
 });

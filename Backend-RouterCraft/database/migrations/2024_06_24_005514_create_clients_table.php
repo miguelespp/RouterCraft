@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             // $table->string('email')->unique();
-            $table->integer('latitude');
-            $table->integer('longitude');
+            $table->float('latitude');
+            $table->float('longitude');
             $table->timestamps();
             $table->unsignedBigInteger('operation_id');
             $table->foreign('operation_id')->references('id')->on('operations')->onDelete('cascade');
