@@ -34,32 +34,47 @@ class OperationController extends Controller
         return response()->json(['message' => 'Operation deleted'], 200);
     }
 
-    public function getRoutes(GetRoutesRequest $request){
+    public function getRoutes(GetRoutesRequest $request)
+{
+    try {
         $nVehicles = Vehicle::where('user_id', $request->user()->id)->count();
         $storage = Storage::where('operation_id', $request->operation_id)->first();
+        
+        if (!$storage) {
+            return response()->json(['error' => 'Storage not found'], 404);
+        }
+
         $clients = Client::where('operation_id', $request->operation_id)->get();
+
+        $coord = [];
         $coord[] = $storage['latitude'] . ',' . $storage['longitude'];
         foreach ($clients as $client) {
-            $coord[] = $client['latitude'] . ' , ' . $client['longitude'];
+            $coord[] = $client['latitude'] . ',' . $client['longitude'];
         }
-        $api_coord = implode(' | ', $coord);
+
+        $api_coord = implode('|', $coord);
         $matrixDistance = $this->getMatrixDistance($api_coord);
 
-        $routes = $this->clarkeWrightAlgorithm($matrixDistance, $nVehicles);
-        $routes = array_map(function ($route) use ($coord) {
-            return array_map(function ($node) use ($coord) {
-                $coord = explode(',', $coord[$node]);
-                return [
-                    'lat' => $coord[0],
-                    'lng' => $coord[1],
-                ];
-            }, $route);
-        }, $routes);
-        return response()->json(compact('routes'), 200);
+        if (is_array($matrixDistance)) {
+            $routes = $this->clarkeWrightAlgorithm($matrixDistance, $nVehicles);
+            $routes = array_map(function ($route) use ($coord) {
+                return array_map(function ($node) use ($coord) {
+                    $coords = explode(',', $coord[$node]);
+                    return [
+                        'lat' => (float) $coords[0],
+                        'lng' => (float) $coords[1],
+                    ];
+                }, $route);
+            }, $routes);
 
-        return response()->json(['nVehicles' => $nVehicles], 200);
+            return response()->json(compact('routes'), 200);
+        } else {
+            return response()->json(['error' => 'Failed to calculate distance matrix'], 500);
+        }
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
     }
-
+}
     public function store(StoreRequest $request)
     {
         // return response()->json($request->user(), 200);
@@ -87,30 +102,33 @@ class OperationController extends Controller
     }
 
     private function getMatrixDistance(string $api_coord)
-    {
+{
+    try {
         $response = Http::get('https://maps.googleapis.com/maps/api/distancematrix/json', [
             'origins' => $api_coord,
             'destinations' => $api_coord,
             'mode' => 'driving',
             'key' => env('APP_GOOGLE_MAPS_API_KEY'),
         ]);
-        // return $response->json();
 
         if ($response->successful()) {
             $data = $response->json();
             $rows = $data['rows'];
+            $matrix = [];
             foreach ($rows as $i => $row) {
                 foreach ($row['elements'] as $j => $element) {
-                    // Asumiendo que queremos la distancia en metros
                     $distance = $element['distance']['value'];
                     $matrix[$i][$j] = $distance;
                 }
             }
             return $matrix;
         } else {
-            return response()->json(['error' => 'No se pudo obtener la información de la distancia'], 500);
+            throw new \Exception('Failed to get distance matrix from Google API');
         }
+    } catch (\Exception $e) {
+        return ['error' => $e->getMessage()];
     }
+}
 
     private function clarkeWrightAlgorithm(array $distances, int $nVehicles): array
     {

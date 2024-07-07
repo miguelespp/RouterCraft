@@ -30,7 +30,7 @@ const Register = () => {
 
   const validationSchema = Yup.object({
     name: Yup.string()
-      .min(10, "EL nombre tiene que tener mas de 10 letras")
+      .min(1, "EL nombre tiene que tener mas de 1 letras")
       .required("El nombre es obligatorio"),
     email: Yup.string()
       .email("El correo no es valido")

@@ -11,20 +11,20 @@ const Login = () => {
   };
 
   const onSubmit = async (values: typeof initialValues) => {
-    // let response;
     try {
       const response = await ApiInstance.post("/auth/login", values);
       console.log(response.data);
+
+      if (response.data.token) {
+        localStorage.setItem("jwtToken", response.data.token);
+        ApiInstance.defaults.headers['Authorization'] = `Bearer ${response.data.token}`;
+      }
     } catch (error: any) {
       if (error.response) {
         const response = error.response.data;
         console.log(response)
       }
     }
-
-    // response.success
-    //   ? console.log("Login success")
-    //   : alert("Error al iniciar sesion");
   };
 
   const validationSchema = Yup.object({

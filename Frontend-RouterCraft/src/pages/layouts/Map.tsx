@@ -26,7 +26,6 @@ interface MarkerData {
 const containerStyle = {
   width: '100%',
   height: '100%',
-
 };
 
 const center = {
@@ -37,7 +36,7 @@ const center = {
 const Mapa: React.FC = () => {
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const [data, setData] = useState<DataStructure>({
-    name: 'NuevaRuta',
+    name: 'NuevaOperacion',
     storage: undefined,
     clients: []
   });
@@ -57,14 +56,14 @@ const Mapa: React.FC = () => {
 
       if (markers.length === 0) {
         // First click, set as storage
-        setData({
-          ...data,
+        setData((prevData) => ({
+          ...prevData,
           storage: {
             name: 'almacen1',
             latitude: newMarker.position.lat,
             longitude: newMarker.position.lng
           }
-        });
+        }));
       } else {
         // Subsequent clicks, set as clients
         const newClient: Location = {
@@ -72,10 +71,10 @@ const Mapa: React.FC = () => {
           latitude: newMarker.position.lat,
           longitude: newMarker.position.lng
         };
-        setData({
-          ...data,
-          clients: [...data.clients, newClient]
-        });
+        setData((prevData) => ({
+          ...prevData,
+          clients: [...prevData.clients, newClient]
+        }));
       }
     }
   };
@@ -86,10 +85,10 @@ const Mapa: React.FC = () => {
 
     if (updatedMarkers.length === 0) {
       // Remove storage if the first marker is deleted
-      setData({
-        ...data,
+      setData((prevData) => ({
+        ...prevData,
         storage: undefined
-      });
+      }));
     } else {
       // Update clients
       const updatedClients = updatedMarkers.slice(1).map((marker, index) => ({
@@ -97,19 +96,21 @@ const Mapa: React.FC = () => {
         latitude: marker.position.lat,
         longitude: marker.position.lng
       }));
-      setData({
-        ...data,
+      setData((prevData) => ({
+        ...prevData,
         clients: updatedClients
-      });
+      }));
     }
   };
 
   const handleSubmit = async () => {
-    ApiInstance.post('/routes', data);
-    console.log(data);
-  }
-
-
+    try {
+      const response = await ApiInstance.post('/operations', data);
+      console.log('Operation saved successfully:', response.data);
+    } catch (error) {
+      console.error('Error saving operation:', error);
+    }
+  };
 
   return (
     <div className="flex justify-center items-center h-screen">
