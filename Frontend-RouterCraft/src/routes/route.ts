@@ -5,6 +5,7 @@ import Register from "../pages/Register";
 import Welcome from "../pages/Welcome";
 import Error from "../pages/error/404";
 import BaseDashBoard from "../pages/layouts/BaseDashBoard";
+import ShowRoutes from "../pages/showRoutes";
 
 export interface RouteInterface {
     path: string;
@@ -40,6 +41,10 @@ export const routes : RouteInterface[] = [
             {
                 path: "vehicle",
                 element: AddVehicle
+            },
+            {
+                path: "routes",
+                element: ShowRoutes
             }
         ],
     },

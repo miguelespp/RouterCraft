@@ -22,8 +22,12 @@ Route::middleware('jwt.verify')->group(function(){
     Route::delete('user', [UserController::class, 'destroy']);
     
     //Manejar operaciones
+    // obtienes un arreglo de operaciones 
     Route::get('operations', [OperationController::class, 'index']);
+    // crea una operacion
     Route::post('operations', [OperationController::class, 'store']);
+    // obtienes una operacion insertando enviando solo el operation _id
+    // te dara las rutas para que las implementes con polylines
     Route::post('operations/routes', [OperationController::class, 'getRoutes']);
 
     //Manejar vehiculos
