@@ -21,7 +21,7 @@ const BaseDashBoard = () => {
           {/* Outlet indica el children que se renderizara por la ruta */}
           <Outlet />
         </div>
-        <footer className="col-span-full h-full">
+        <footer className="col-span-full h-14">
           <Footer />
         </footer>
       </div>

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export interface NavBarProps {
   setSelectedOption: (option: string) => void;
   setExpandeState  : (option: boolean) => void;
@@ -14,11 +16,17 @@ const NavBar = ({ setSelectedOption, setExpandeState, isExpanded }:NavBarProps) 
         </button>
         <nav>
           <ul>
-            {['Home', 'Customers', 'Settings'].map(option => (
+            {/* {['Home', 'Customers', 'Settings'].map(option => (
               <li key={option} className="p-2 cursor-pointer" onClick={() => setSelectedOption(option)}>
                 {option}
               </li>
-            ))}
+            ))} */}
+            <li className="p-2 cursor-pointer" onClick={() => setSelectedOption('Home')}>
+              <Link to="/dashboard">Home</Link>
+            </li>
+            <li className="p-2 cursor-pointer">
+            <Link to="/dashboard/vehicle">Vehiculos</Link>
+            </li>
           </ul>
         </nav>
       </div>

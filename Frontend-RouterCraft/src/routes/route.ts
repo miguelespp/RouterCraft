@@ -1,3 +1,4 @@
+import AddVehicle from "../pages/AddVehicle";
 import Customers from "../pages/Customers";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -36,6 +37,10 @@ export const routes : RouteInterface[] = [
                 path: "",
                 element: Customers,
             },
+            {
+                path: "vehicle",
+                element: AddVehicle
+            }
         ],
     },
 ]

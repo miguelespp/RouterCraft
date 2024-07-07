@@ -16,6 +16,11 @@ const Register = () => {
     try {
       const response = await ApiInstance.post("/auth/register", values);
       console.log(response.data);
+
+      if (response.data.token) {
+        localStorage.setItem("jwtToken", response.data.token);
+      }
+
     } catch (error: any) {
       if (error.response) {
         console.log(error.response.data);
@@ -65,7 +70,7 @@ const Register = () => {
                     label="Nombre"
                     type="text"
                     name="name"
-                    placeholder="Ingrese su nomre"
+                    placeholder="Ingrese su nombre"
                     error={errors.name}
                     onChange={handleChange}
                     value={values.name}
