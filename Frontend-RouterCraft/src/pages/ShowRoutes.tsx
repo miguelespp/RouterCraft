@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { ApiInstance } from "../Services/Api";
 import { GoogleMap, LoadScript, Polyline } from '@react-google-maps/api';
 
+const key = process.env.APP_GOOGLE_MAPS_API_KEY;
+
 interface Operation {
     id: number;
     name: string;
@@ -39,11 +41,26 @@ const ShowRoutes = () => {
     }, []);
 
     const fetchRoutes = async (operationId: number) => {
+        if (operationId === null) return;
+
         try {
             console.log(`Fetching routes for operation ID: ${operationId}`);
             const response = await ApiInstance.post("/operations/routes", { operation_id: operationId });
-            console.log('Routes fetched:', response.data.routes);
-            setRoutes(response.data.routes);
+
+            const fetchedRoutes: Route[][] = Object.values(response.data.routes).map(routeArray =>
+                (routeArray as any[]).map(route => ({
+                    lat: parseFloat(route.lat),
+                    lng: parseFloat(route.lng)
+                }))
+            );
+
+            if (fetchedRoutes.length > 100) { // Assuming 100 routes is too many for a single request
+                setError("This operation is too costly and cannot be processed.");
+                return;
+            }
+
+            console.log('Routes fetched:', fetchedRoutes);
+            setRoutes(fetchedRoutes);
             setSelectedOperationId(operationId);
         } catch (error) {
             console.error(error);
@@ -80,7 +97,7 @@ const ShowRoutes = () => {
                 </tbody>
             </table>
             {selectedOperationId && routes.length > 0 && (
-                <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
+                <LoadScript googleMapsApiKey={key || ''}>
                     <GoogleMap
                         mapContainerStyle={{ height: "400px", width: "800px" }}
                         center={routes[0][0]}

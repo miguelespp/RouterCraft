@@ -34,47 +34,32 @@ class OperationController extends Controller
         return response()->json(['message' => 'Operation deleted'], 200);
     }
 
-    public function getRoutes(GetRoutesRequest $request)
-{
-    try {
+    public function getRoutes(GetRoutesRequest $request){
         $nVehicles = Vehicle::where('user_id', $request->user()->id)->count();
         $storage = Storage::where('operation_id', $request->operation_id)->first();
-        
-        if (!$storage) {
-            return response()->json(['error' => 'Storage not found'], 404);
-        }
-
         $clients = Client::where('operation_id', $request->operation_id)->get();
-
-        $coord = [];
         $coord[] = $storage['latitude'] . ',' . $storage['longitude'];
         foreach ($clients as $client) {
-            $coord[] = $client['latitude'] . ',' . $client['longitude'];
+            $coord[] = $client['latitude'] . ' , ' . $client['longitude'];
         }
-
-        $api_coord = implode('|', $coord);
+        $api_coord = implode(' | ', $coord);
         $matrixDistance = $this->getMatrixDistance($api_coord);
 
-        if (is_array($matrixDistance)) {
-            $routes = $this->clarkeWrightAlgorithm($matrixDistance, $nVehicles);
-            $routes = array_map(function ($route) use ($coord) {
-                return array_map(function ($node) use ($coord) {
-                    $coords = explode(',', $coord[$node]);
-                    return [
-                        'lat' => (float) $coords[0],
-                        'lng' => (float) $coords[1],
-                    ];
-                }, $route);
-            }, $routes);
+        $routes = $this->clarkeWrightAlgorithm($matrixDistance, $nVehicles);
+        $routes = array_map(function ($route) use ($coord) {
+            return array_map(function ($node) use ($coord) {
+                $coord = explode(',', $coord[$node]);
+                return [
+                    'lat' => $coord[0],
+                    'lng' => $coord[1],
+                ];
+            }, $route);
+        }, $routes);
+        return response()->json(compact('routes'), 200);
 
-            return response()->json(compact('routes'), 200);
-        } else {
-            return response()->json(['error' => 'Failed to calculate distance matrix'], 500);
-        }
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Internal Server Error', 'message' => $e->getMessage()], 500);
+        return response()->json(['nVehicles' => $nVehicles], 200);
     }
-}
+    
     public function store(StoreRequest $request)
     {
         // return response()->json($request->user(), 200);
