@@ -42,7 +42,7 @@ const Login = () => {
   });
 
   return (
-    <section className="container bg-slate-500 h-full min-h-screen grid grid-cols-1 sm:grid-cols-2 content-center">
+    <section className="container bg-sky-600 h-full min-h-screen grid grid-cols-1 sm:grid-cols-2 content-center">
       <div className="w-full h-full flex rounded">
         <img className="items-center" src="src/assets/login.jpg" alt="login" />
       </div>

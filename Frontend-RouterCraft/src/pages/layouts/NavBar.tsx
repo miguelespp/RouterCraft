@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link  } from "react-router-dom";
 import { ApiInstance } from "../../Services/Api";
 
 export interface NavBarProps {
@@ -10,6 +10,7 @@ export interface NavBarProps {
 const NavBar = ({ setSelectedOption, setExpandeState, isExpanded }:NavBarProps) => {
   const handleLogout = () => {
     const response = ApiInstance.post('/logout');
+    console.log(response);
     localStorage.removeItem('token');
     alert('Sesión cerrada');
   };
@@ -32,7 +33,7 @@ const NavBar = ({ setSelectedOption, setExpandeState, isExpanded }:NavBarProps) 
             </li>
             
           </ul>
-          <Link to="/login" className="p-2 cursor-pointer" onClick={handleLogout}>Logout</Link>
+          <Link to="/" className="p-2 cursor-pointer" onClick={handleLogout}>Logout</Link>
         </nav>
       </div>
     );
