@@ -29,7 +29,7 @@ class OperationController extends Controller
 
     public function destroy(Request $request)
     {
-        $operation = Operation::where('user_id', $request->user->id)->andWhere('id', $request->operation->id)->first();
+        $operation = Operation::where('user_id', $request->user()->id)->Where('id', $request->operation_id)->first();
         $operation->delete();
         return response()->json(['message' => 'Operation deleted'], 200);
     }
@@ -112,6 +112,7 @@ class OperationController extends Controller
         }
     }
 
+
     private function clarkeWrightAlgorithm(array $distances, int $nVehicles): array
     {
         $n = count($distances);
@@ -134,6 +135,7 @@ class OperationController extends Controller
             return $b['saving'] <=> $a['saving'];
         });
 
+        // Inicializar rutas individuales
         for ($i = 1; $i < $n; $i++) {
             $routes[$i] = [$i];
         }
@@ -155,10 +157,13 @@ class OperationController extends Controller
                 }
             }
 
-            // Unimos las rutas si i y j están en diferentes rutas y no exceden el número de vehículos
-            if ($routeI !== null && $routeJ !== null && $routeI != $routeJ && count($routes[$routeI]) + count($routes[$routeJ]) <= $nVehicles) {
-                $routes[$routeI] = array_merge($routes[$routeI], $routes[$routeJ]);
-                unset($routes[$routeJ]);
+            // Unimos las rutas si i y j están en diferentes rutas
+            if ($routeI !== null && $routeJ !== null && $routeI != $routeJ) {
+                $combinedRoute = array_merge($routes[$routeI], $routes[$routeJ]);
+                if (count($combinedRoute) <= ceil(($n - 1) / $nVehicles)) {
+                    $routes[$routeI] = $combinedRoute;
+                    unset($routes[$routeJ]);
+                }
             }
         }
 
@@ -167,8 +172,10 @@ class OperationController extends Controller
             array_unshift($route, 0);
             $route[] = 0;
         }
-        return $routes;
+
+        return array_values($routes);
     }
+
 
 
 }

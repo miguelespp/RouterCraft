@@ -3,8 +3,10 @@ import { ApiInstance } from "../Services/Api";
 import { Formik } from "formik";
 import Input from "../components/input/InputLabel";
 import Button from "../components/button/InputButton";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const initialValues = {
     email: "",
     password: "",
@@ -19,6 +21,9 @@ const Login = () => {
         localStorage.setItem("jwtToken", response.data.token);
         ApiInstance.defaults.headers['Authorization'] = `Bearer ${response.data.token}`;
       }
+
+      navigate("/dashboard");
+
     } catch (error: any) {
       if (error.response) {
         const response = error.response.data;
@@ -38,7 +43,7 @@ const Login = () => {
 
   return (
     <section className="container bg-slate-500 h-full min-h-screen grid grid-cols-1 sm:grid-cols-2 content-center">
-      <div className="w-full h-full flex">
+      <div className="w-full h-full flex rounded">
         <img className="items-center" src="src/assets/login.jpg" alt="login" />
       </div>
       <div className="w-full mx-auto my-auto py-[15%] max-w-[60%]">
@@ -46,7 +51,7 @@ const Login = () => {
           <div className="max-w-md w-full space-y-8 m-auto">
             <div className="py-2 my-4">
               <h2 className="text-3xl font-bold text-center text-white">
-                Login
+                LOGIN
               </h2>
             </div>
             <Formik
@@ -75,7 +80,7 @@ const Login = () => {
                     value={values.password}
                   />
 
-                  <Button type="submit" value="Registrar" />
+                  <Button type="submit" value="Login" />
                 </form>
               )}
             </Formik>

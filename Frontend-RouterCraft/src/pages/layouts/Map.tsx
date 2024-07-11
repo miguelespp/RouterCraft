@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import { ApiInstance } from '../../Services/Api';
+import stateScript from '../../store/stateScript';
 
 interface Location {
   name: string;
@@ -28,19 +29,50 @@ const containerStyle = {
   height: '100%',
 };
 
-const center = {
-  lat: -3.745,
-  lng: -38.523
-};
 
 const Mapa: React.FC = () => {
+  const {loaded, setLoaded} = stateScript();
+  const [center, setCenter] = useState({ lat: -12.04318, lng: -77.02824 });
   const [markers, setMarkers] = useState<MarkerData[]>([]);
   const [data, setData] = useState<DataStructure>({
-    name: 'NuevaOperacion',
+    name: '',
     storage: undefined,
     clients: []
   });
   const key = process.env.APP_GOOGLE_MAPS_API_KEY;
+
+  const getUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          };
+          setCenter(pos);
+        },
+        () => {
+          console.error("Error al obtener la ubicación");
+        }
+      );
+    } else {
+      console.error("Geolocalización no soportada por este navegador.");
+    }
+  };
+
+  useEffect(() => {
+    getUserLocation();
+  }, []);
+
+  const handleInputChange = (event: any) => {
+    setData({ ...data, name: event.target.value });
+  };
+
+  const onLoad = () => {
+    if (!loaded) {
+      setLoaded(true);
+    }
+  }
 
   const handleMapClick = (event: google.maps.MapMouseEvent) => {
     if (event.latLng) {
@@ -106,7 +138,17 @@ const Mapa: React.FC = () => {
   const handleSubmit = async () => {
     try {
       const response = await ApiInstance.post('/operations', data);
+      
       console.log('Operation saved successfully:', response.data);
+      alert('Operation saved successfully')
+
+      setData(
+        {
+          name: '',
+          storage: undefined,
+          clients: []
+        }
+      );
     } catch (error) {
       console.error('Error saving operation:', error);
     }
@@ -114,11 +156,32 @@ const Mapa: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <LoadScript googleMapsApiKey={key || ''}>
+      {
+        loaded ? (
+          <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={15}
+          onClick={handleMapClick}
+        >
+          <Marker position={center} />
+          {markers.map(marker => (
+            <Marker
+              key={marker.id}
+              position={marker.position}
+              icon={{
+                url: `http://maps.google.com/mapfiles/ms/icons/${marker.color}-dot.png`
+              }}
+              onRightClick={() => handleMarkerRightClick(marker.id)}
+            />
+          ))}
+        </GoogleMap>
+        ) : (
+          <LoadScript googleMapsApiKey={key || ''} onLoad={onLoad}>
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
-          zoom={10}
+          zoom={15}
           onClick={handleMapClick}
         >
           <Marker position={center} />
@@ -134,12 +197,19 @@ const Mapa: React.FC = () => {
           ))}
         </GoogleMap>
       </LoadScript>
+        )
+      }
+      
       <div>
-        <h2>Datos Guardados:</h2>
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      </div>
-      <div className='w-16 bg-blue-500 rounded p-2'>
-        <button onClick={handleSubmit}>Guardar</button>
+        <strong className='font-sans mb-5 text-2xl'>Nueva Operacion</strong>
+        <div className='space-y-4 mt-10'>
+          <label htmlFor="name" >Nombre de la operación</label>
+          <input type="text" name="name" id="name" value={data.name} onChange={handleInputChange} className='h-10 p-3' />
+          <div className='rounded bg-blue-500 mx-12'>
+          <button onClick={handleSubmit} className='p-6'>Guardar</button>
+          </div>
+        </div>
+        
       </div>
     </div>
   );

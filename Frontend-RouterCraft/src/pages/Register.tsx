@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import Input from "../components/input/InputLabel";
 import Button from "../components/button/InputButton";
 import { ApiInstance } from "../Services/Api";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const initialValues = {
@@ -12,6 +13,8 @@ const Register = () => {
     password_confirmation: "",
   };
 
+  const navigate = useNavigate();
+
   const onSubmit = async (values: typeof initialValues) => {
     try {
       const response = await ApiInstance.post("/auth/register", values);
@@ -20,6 +23,8 @@ const Register = () => {
       if (response.data.token) {
         localStorage.setItem("jwtToken", response.data.token);
       }
+
+      navigate("/dashboard");
 
     } catch (error: any) {
       if (error.response) {

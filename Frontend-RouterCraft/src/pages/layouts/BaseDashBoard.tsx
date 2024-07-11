@@ -42,8 +42,7 @@ const BaseDashBoard = () => {
         <header className="h-14 col-span-full">
           <Header selectedOption={selectedOption} />
         </header>
-
-        <div className="col-span-3 flex-grow p-6 bg-gray-100 h-full w-full">
+        <div className="col-span-3 bg-gray-100 h-full w-full">
           <Outlet />
         </div>
         <footer className="col-span-full h-14">

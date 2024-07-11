@@ -7,6 +7,7 @@ interface InputLabelProps {
   error?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
+  color?: string;
 }
 
 const InputLabel = ({
@@ -16,11 +17,12 @@ const InputLabel = ({
   name,
   placeholder,
   error,
-  onChange
+  onChange,
+  color,
 }: InputLabelProps) => {
   return (
     <div>
-      <label htmlFor="password" className="text-white">
+      <label htmlFor="password" className={color ? `text-${color}-500` :'text-white' }>
         {label}
       </label>
       <input
