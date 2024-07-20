@@ -21,7 +21,7 @@ class VehicleController extends Controller
 
     public function destroy(Request $request)
     {
-        $vehicle = Vehicle::find($request->vehicle->id);
+        $vehicle = Vehicle::find($request->vehicle_id);
         $vehicle->delete();
         return response()->json(['message' => 'Vehicle deleted'], 200);
     }

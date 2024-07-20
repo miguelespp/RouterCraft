@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import Input from "../components/input/InputLabel";
 import Button from "../components/button/InputButton";
 import { ApiInstance } from "../Services/Api";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const initialValues = {
@@ -11,6 +12,8 @@ const Register = () => {
     password: "",
     password_confirmation: "",
   };
+
+  const navigate = useNavigate();
 
   const onSubmit = async (values: typeof initialValues) => {
     try {
@@ -21,6 +24,8 @@ const Register = () => {
         localStorage.setItem("jwtToken", response.data.token);
       }
 
+      navigate("/dashboard");
+
     } catch (error: any) {
       if (error.response) {
         console.log(error.response.data);
@@ -30,7 +35,7 @@ const Register = () => {
 
   const validationSchema = Yup.object({
     name: Yup.string()
-      .min(10, "EL nombre tiene que tener mas de 10 letras")
+      .min(1, "EL nombre tiene que tener mas de 1 letras")
       .required("El nombre es obligatorio"),
     email: Yup.string()
       .email("El correo no es valido")

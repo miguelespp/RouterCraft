@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const ApiInstance = axios.create({
-  baseURL: "http://backend-routercraft.test/api",
-  timeout: 1000,
+  baseURL: "http://127.0.0.1:8000/api",
+  timeout: 5000,
   headers: {
     "Content-Type": "application/json",
   },
