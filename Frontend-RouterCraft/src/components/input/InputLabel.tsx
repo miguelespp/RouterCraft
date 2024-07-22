@@ -30,7 +30,7 @@ const InputLabel = ({
         name={name}
         id={id}
         placeholder={placeholder}
-        className="w-full rounded-lg px-4 py-2"
+        className="w-full rounded-lg px-4 py-2 shadow"
         onChange={onChange}
       />
       {error && <p className="text-red-500 mt-0">{error}</p>}

@@ -4,15 +4,18 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { Outlet, useNavigate } from "react-router-dom";
 import {jwtDecode} from "jwt-decode"; // Correct import for jwt-decode
-import { ApiInstance } from '../../Services/Api'; // Ensure ApiInstance is imported
+import { ApiInstance } from '@/Services/Api.ts';
+import {LoadScript} from "@react-google-maps/api"; // Ensure ApiInstance is imported
 
 const BaseDashBoard = () => {
   const [selectedOption, setSelectedOption] = useState('Dashboard');
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
+  const key = process.env.APP_GOOGLE_MAPS_API_KEY;
 
   useEffect(() => {
     const token = localStorage.getItem("jwtToken");
+
 
     if (!token) {
       navigate("/login");
@@ -42,11 +45,13 @@ const BaseDashBoard = () => {
         <header className="h-14 col-span-full">
           <Header selectedOption={selectedOption} />
         </header>
-        <div className="col-span-3 bg-gray-100 h-full w-full">
-          <Outlet />
-        </div>
+        <LoadScript googleMapsApiKey={key || ""}>
+          <div className="col-span-3 bg-gray-100 h-full w-full">
+            <Outlet/>
+          </div>
+        </LoadScript>
         <footer className="col-span-full h-14">
-          <Footer />
+          <Footer/>
         </footer>
       </div>
     </div>
