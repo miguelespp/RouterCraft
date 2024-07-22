@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { Formik } from "formik";
 import Input from "../components/input/InputLabel";
 import Button from "../components/button/InputButton";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table.tsx";
 
 interface vehicles {
   id: number;
@@ -11,7 +12,7 @@ interface vehicles {
   capacity: string;
 }
 
-const AddVehicle = () => {
+const AddVehicle =  () => {
   const [vehicles, setVehicles] = useState<vehicles[]>([]);
   const initialValues = {
     model: "",
@@ -19,16 +20,18 @@ const AddVehicle = () => {
   };
 
   useEffect(() => {
-    const fetchOperations = async () => {
+    const fetchvehicles = async () => {
       try {
         const response = await ApiInstance.get("/vehicles");
         setVehicles(response.data.vehicles);
+        // console.log(response.data.vehicles)
       } catch (error) {
-        console.error("Error fetching operations:", error);
+        console.error("Error fetching vehicles:", error);
       }
     };
 
-    fetchOperations();
+    fetchvehicles();
+
   }, []);
 
   const handleDeleteVehicles = async (id: number) => {
@@ -56,39 +59,39 @@ const AddVehicle = () => {
   });
 
   return (
-    <div className="">
-      <h1 className="text-2xl mb-4">Operations List</h1>
-      <table className="min-w-full bg-white">
-        <thead>
-          <tr>
-            <th className="py-2">ID</th>
-            <th className="py-2">Name</th>
-            <th className="py-2">Capacity</th>
-            <th className="py-2"></th>
-            <th className="py-2"></th>
-          </tr>
-        </thead>
-        <tbody>
-          
-          { vehicles ? vehicles.map((operation) => (
-            <tr key={operation.id}>
-              <td className="py-2">{operation.id}</td>
-              <td className="py-2">{operation.model}</td>
-              <td className="py-2">{operation.capacity}</td>
-              <td className="py-2">
-              </td>
-              <td className="py-2">
-                <button
-                  className="bg-red-500 text-white px-4 py-1 rounded"
-                  onClick={() => handleDeleteVehicles(operation.id)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          )) : null}
-        </tbody>
-      </table>
+    <div className="p-4 rounded-md">
+      <h1 className="text-2xl my-4">Vehicles List</h1>
+
+      <Table className={"border-2 rounded"}>
+        <TableHeader className={"bg-blue-500"}>
+          <TableRow >
+            <TableHead className={"text-center text-white"}>ID</TableHead>
+            <TableHead className={"text-center text-white"}>Name</TableHead>
+            <TableHead className={"text-center text-white"}>Capacity</TableHead>
+            <TableHead></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {vehicles.map((vehicle) => (
+              <TableRow key={vehicle.id}>
+                <TableCell>{vehicle.id}</TableCell>
+                <TableCell>{vehicle.model}</TableCell>
+                <TableCell>{vehicle.capacity}</TableCell>
+
+                <TableCell className="text-center">
+                  <button
+                      className="bg-red-500 text-white px-4 py-1 rounded"
+                      onClick={() => handleDeleteVehicles(vehicle.id)}
+                  >
+                    Delete
+                  </button>
+                </TableCell>
+              </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+
+
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}

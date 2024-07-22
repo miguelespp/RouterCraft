@@ -21,7 +21,7 @@ const InputLabel = ({
   color,
 }: InputLabelProps) => {
   return (
-    <div>
+    <div className="space-y-3">
       <label htmlFor="password" className={color ? `text-${color}-500` :'text-white' }>
         {label}
       </label>
@@ -33,7 +33,7 @@ const InputLabel = ({
         className="w-full rounded-lg px-4 py-2"
         onChange={onChange}
       />
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-red-500 mt-0">{error}</p>}
     </div>
   );
 };

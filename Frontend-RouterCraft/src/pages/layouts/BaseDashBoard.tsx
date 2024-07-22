@@ -36,7 +36,7 @@ const BaseDashBoard = () => {
   }, [navigate]);
 
   return (
-    <div className="container min-h-screen grid grid-cols-10">
+    <div className="min-h-screen grid grid-cols-10">
       <NavBar setSelectedOption={setSelectedOption} isExpanded={expanded} setExpandeState={setExpanded} />
       <div className={`${expanded ? 'col-span-8': 'col-span-9'} grid grid-cols-1`}>
         <header className="h-14 col-span-full">
