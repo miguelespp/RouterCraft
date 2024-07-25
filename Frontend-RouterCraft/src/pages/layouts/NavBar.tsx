@@ -25,10 +25,10 @@ const NavBar = ({ setSelectedOption, setExpandeState, isExpanded }:NavBarProps) 
             <li className="p-2 cursor-pointer" onClick={() => setSelectedOption('Home')}>
               <Link to="/dashboard">Home</Link>
             </li>
-            <li className="p-2 cursor-pointer">
+            <li className="p-2 cursor-pointer" onClick={() => setSelectedOption('Vehicles')}>
               <Link to="/dashboard/vehicle">Vehiculos</Link>
             </li>
-            <li className="p-2 cursor-pointer">
+            <li className="p-2 cursor-pointer" onClick={() => setSelectedOption('Routes')}>
               <Link to="/dashboard/routes">Routes</Link>
             </li>
             

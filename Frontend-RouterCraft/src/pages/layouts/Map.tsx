@@ -140,6 +140,7 @@ const Mapa: React.FC = () => {
                     clients: []
                 }
             );
+            setMarkers([]);
         } catch (error) {
             console.error('Error saving operation:', error);
         }
