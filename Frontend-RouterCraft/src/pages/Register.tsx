@@ -49,12 +49,12 @@ const Register = () => {
   });
 
   return (
-    <section className="container min-h-screen">
-      <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-[5%] lg:px-8 bg-blue-800">
+    <section className=" min-h-screen w-full">
+      <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-[5%] lg:px-8 bg-cyan-800">
         <div className="rounded-lg h-full w-full">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <img
-              className="mx-auto h-16 w-auto rounded-full"
+              className="mx-auto h-20 w-auto rounded-full"
               src="/logo.jpeg"
               alt="Logo"
             />
