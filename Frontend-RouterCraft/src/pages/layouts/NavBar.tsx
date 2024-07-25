@@ -22,14 +22,14 @@ const NavBar = ({ setSelectedOption, setExpandeState, isExpanded }:NavBarProps) 
         </button>
         <nav className="h-[80%]">
           <ul className="space-y-3 h-full">
-            <li className="p-2 cursor-pointer" onClick={() => setSelectedOption('Home')}>
-              <Link to="/dashboard">Home</Link>
+            <li className="p-2 cursor-pointer">
+              <Link to="/dashboard" onClick={() => setSelectedOption('Home')}>Home</Link>
             </li>
-            <li className="p-2 cursor-pointer" onClick={() => setSelectedOption('Vehicles')}>
-              <Link to="/dashboard/vehicle">Vehiculos</Link>
+            <li className="p-2 cursor-pointer">
+              <Link to="/dashboard/vehicle" onClick={() => setSelectedOption('Vehicles')}>Vehiculos</Link>
             </li>
-            <li className="p-2 cursor-pointer" onClick={() => setSelectedOption('Routes')}>
-              <Link to="/dashboard/routes">Routes</Link>
+            <li className="p-2 cursor-pointer">
+              <Link to="/dashboard/routes" onClick={() => setSelectedOption('Routes')}>Routes</Link>
             </li>
             
           </ul>
