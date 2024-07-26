@@ -1,10 +1,20 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import {ApiInstance} from "../Services/Api";
 import * as Yup from "yup";
 import {Formik} from "formik";
 import Input from "../components/input/InputLabel";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog.tsx";
+import {MdDelete} from "react-icons/md";
 
 interface vehicles {
     id: number;
@@ -62,6 +72,7 @@ const AddVehicle = () => {
         <div className="p-4 rounded-md">
             <h1 className="text-2xl my-4">Vehicles List</h1>
 
+
             <Table className={"border-2 rounded"}>
                 <TableHeader className={"bg-blue-500"}>
                     <TableRow>
@@ -71,7 +82,7 @@ const AddVehicle = () => {
                         <TableHead></TableHead>
                     </TableRow>
                 </TableHeader>
-                <TableBody>
+                <TableBody className={"bg-gray-300"}>
                     {vehicles.map((vehicle) => (
                         <TableRow key={vehicle.id}>
                             <TableCell>{vehicle.id}</TableCell>
@@ -79,45 +90,61 @@ const AddVehicle = () => {
                             <TableCell>{vehicle.capacity}</TableCell>
 
                             <TableCell className="text-center">
-                                <Button variant="destructive" onClick={() => handleDeleteVehicles(vehicle.id)}>Delete</Button>
+                                <Button variant="destructive" onClick={() => handleDeleteVehicles(vehicle.id)}><MdDelete
+                                    className={"w-5 h-5"}/></Button>
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
-
-
-            <Formik
-                initialValues={initialValues}
-                onSubmit={onSubmit}
-                validationSchema={validationSchema}
-            >
-                {({values, errors, handleChange, handleSubmit}) => (
-                    <form onSubmit={handleSubmit} className="space-y-12 py-4 mx-80">
-                        <Input
-                            label="Modelo"
-                            type="text"
-                            name="model"
-                            placeholder="Hyundai Accent 2021"
-                            error={errors.model}
-                            onChange={handleChange}
-                            value={values.model}
-                            color="black"
-                        />
-                        <Input
-                            label="Capacidad"
-                            type="text"
-                            name="capacity"
-                            placeholder="150 cc"
-                            error={errors.capacity}
-                            onChange={handleChange}
-                            value={values.capacity}
-                            color="black"
-                        />
-                        <Button type="submit">Registrar</Button>
-                    </form>
-                )}
-            </Formik>
+            <div className={"flex "}>
+                <Dialog>
+                    <DialogTrigger className={"ml-auto mr-4"}>
+                        <Button className={"bg-cyan-800 mt-4 w-18"}>Add</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Add a vehicle</DialogTitle>
+                            <DialogDescription>
+                                We need some information to add a vehicle
+                            </DialogDescription>
+                        </DialogHeader>
+                        <Formik
+                            initialValues={initialValues}
+                            onSubmit={onSubmit}
+                            validationSchema={validationSchema}
+                        >
+                            {({values, errors, handleChange, handleSubmit}) => (
+                                <form onSubmit={handleSubmit} className="space-y-12 py-4">
+                                    <Input
+                                        label="Modelo"
+                                        type="text"
+                                        name="model"
+                                        placeholder="Hyundai Accent 2021"
+                                        error={errors.model}
+                                        onChange={handleChange}
+                                        value={values.model}
+                                        color="black"
+                                    />
+                                    <Input
+                                        label="Capacidad"
+                                        type="text"
+                                        name="capacity"
+                                        placeholder="150 cc"
+                                        error={errors.capacity}
+                                        onChange={handleChange}
+                                        value={values.capacity}
+                                        color="black"
+                                    />
+                                    <DialogFooter>
+                                        <Button type="submit">Registrar</Button>
+                                    </DialogFooter>
+                                </form>
+                            )}
+                        </Formik>
+                    </DialogContent>
+                </Dialog>
+            </div>
         </div>
     );
 };
