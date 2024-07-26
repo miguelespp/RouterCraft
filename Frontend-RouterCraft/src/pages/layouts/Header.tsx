@@ -26,7 +26,7 @@ const Header = ({selectedOption}: HeaderProps) => {
     };
 
     return (
-        <header className="h-full bg-gray-700 text-white p-2 flex justify-between items-center relative">
+        <header className="h-14 bg-gray-700 text-white p-2 flex justify-between items-center relative">
             <h1 className="p-1 text-2xl font-sans font-semibold absolute left-1/2 transform -translate-x-1/2">{selectedOption}</h1>
             <div className="flex justify-end ml-auto">
 

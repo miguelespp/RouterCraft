@@ -147,7 +147,7 @@ const Mapa: React.FC = () => {
     };
 
     return (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center h-[80vh] m-3">
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={center}
@@ -172,9 +172,9 @@ const Mapa: React.FC = () => {
                 <div className='space-y-4 mt-10'>
                     <label htmlFor="name">Nombre de la operación</label>
                     <input type="text" name="name" id="name" value={data.name} onChange={handleInputChange}
-                           className='h-10 p-3'/>
-                    <div className='rounded bg-blue-500 mx-12'>
-                        <button onClick={handleSubmit} className='p-6'>Guardar</button>
+                           className='h-10 p-3 rounded'/>
+                    <div className='rounded bg-blue-500 mx-16'>
+                        <button onClick={handleSubmit} className='p-4'>Guardar</button>
                     </div>
                 </div>
 

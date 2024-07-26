@@ -1,6 +1,9 @@
 import {useEffect, useState} from "react";
 import {GoogleMap, Polyline} from "@react-google-maps/api";
 import {ApiInstance} from "../Services/Api";
+import {Table, TableBody, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
+import {MdDelete} from "react-icons/md";
+import {Button} from "@/components/ui/button.tsx";
 
 interface Operation {
     id: number;
@@ -75,43 +78,42 @@ const ShowRoutes = () => {
     return (
         <div className="p-4">
             <h1 className="text-2xl mb-4">Operations List</h1>
-            <table className="min-w-full bg-white">
-                <thead>
-                <tr>
-                    <th className="py-2">ID</th>
-                    <th className="py-2">Name</th>
-                    <th className="py-2">Created at</th>
-                    <th className="py-2"></th>
-                    <th className="py-2"></th>
-                </tr>
-                </thead>
-                <tbody>
-
-                {operations.map((operation) => (
-                    <tr key={operation.id}>
-                        <td className="py-2">{operation.id}</td>
-                        <td className="py-2">{operation.name}</td>
-                        <td className="py-2">{operation.created_at.split('T')[0]}</td>
-                        <td className="py-2">
-                            <button
-                                className="bg-blue-500 text-white px-4 py-1 rounded"
-                                onClick={() => handleShowRoutes(operation.id)}
-                            >
-                                Show Routes
-                            </button>
-                        </td>
-                        <td className="py-2">
-                            <button
-                                className="bg-red-500 text-white px-4 py-1 rounded"
-                                onClick={() => handleDeleteOperation(operation.id)}
-                            >
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            <Table className={"border-2 rounded"}>
+                <TableHeader className={"bg-blue-500"}>
+                    <TableRow>
+                        <TableHead className={"text-center text-white"}>ID</TableHead>
+                        <TableHead className={"text-center text-white"}>Name</TableHead>
+                        <TableHead className={"text-center text-white"}>Created at</TableHead>
+                        <TableHead className={"text-center text-white"}></TableHead>
+                        <TableHead className={"text-center text-white"}></TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody className={"bg-gray-300"}>
+                    {operations.map((operation) => (
+                        <TableRow key={operation.id}>
+                            <TableHead className={"text-center"}>{operation.id}</TableHead>
+                            <TableHead className={"text-center"}>{operation.name}</TableHead>
+                            <TableHead className={"text-center"}>{operation.created_at.split('T')[0]}</TableHead>
+                            <TableHead className={"text-center"}>
+                                <Button
+                                    className="bg-blue-500 text-white"
+                                    onClick={() => handleShowRoutes(operation.id)}
+                                >
+                                    Show Routes
+                                </Button>
+                            </TableHead>
+                            <TableHead className={"text-center"}>
+                                <Button variant={"destructive"}
+                                    onClick={() => handleDeleteOperation(operation.id)}
+                                >
+                                    <MdDelete
+                                        className={"w-5 h-5"}/>
+                                </Button>
+                            </TableHead>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
 
             {selectedOperationId && (
                 <div className="mt-8">
