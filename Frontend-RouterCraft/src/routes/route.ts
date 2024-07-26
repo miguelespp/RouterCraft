@@ -6,6 +6,8 @@ import Welcome from "../pages/Welcome";
 import Error from "../pages/error/404";
 import BaseDashBoard from "../pages/layouts/BaseDashBoard";
 import ShowRoutes from "../pages/ShowRoutes";
+import Profile from "@/pages/Profile.tsx";
+import Settings from "@/pages/Settings.tsx";
 
 export interface RouteInterface {
     path: string;
@@ -45,6 +47,14 @@ export const routes : RouteInterface[] = [
             {
                 path: "routes",
                 element: ShowRoutes
+            },
+            {
+                path: "profile",
+                element: Profile
+            },
+            {
+                path: "settings",
+                element: Settings
             }
         ],
     },
