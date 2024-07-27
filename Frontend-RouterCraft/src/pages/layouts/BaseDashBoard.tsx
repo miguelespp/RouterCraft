@@ -39,20 +39,16 @@ const BaseDashBoard = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen grid grid-cols-10">
+    <div className="min-h-screen flex">
       <NavBar setSelectedOption={setSelectedOption} isExpanded={expanded} setExpandeState={setExpanded} />
-      <div className={`${expanded ? 'col-span-8': 'col-span-9'} grid grid-cols-1`}>
-        <header className="h-14 col-span-full">
-          <Header selectedOption={selectedOption} />
-        </header>
+      <div className={`grow flex flex-col`}>
+        <Header selectedOption={selectedOption} />
         <LoadScript googleMapsApiKey={key || ""}>
           <div className="col-span-3 bg-gray-100 h-full w-full">
             <Outlet/>
           </div>
         </LoadScript>
-        <footer className="col-span-full h-14">
-          <Footer/>
-        </footer>
+        <Footer/>
       </div>
     </div>
   );

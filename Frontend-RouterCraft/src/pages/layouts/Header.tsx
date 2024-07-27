@@ -26,7 +26,7 @@ const Header = ({selectedOption}: HeaderProps) => {
     };
 
     return (
-        <header className="h-full bg-gray-700 text-white p-2 flex justify-between items-center relative">
+        <header className="h-14 bg-gray-700 text-white p-2 flex justify-between items-center relative">
             <h1 className="p-1 text-2xl font-sans font-semibold absolute left-1/2 transform -translate-x-1/2">{selectedOption}</h1>
             <div className="flex justify-end ml-auto">
 
@@ -47,9 +47,9 @@ const Header = ({selectedOption}: HeaderProps) => {
                     <DropdownMenuTrigger className="mr-2">
                         <Avatar>
                             <AvatarImage
-                                src="https://lh3.googleusercontent.com/a/ACg8ocLx-3WB24PHBKweQeUcuigjE8BAcyQDTlIspkZP5sUXC1eqM6D_=s360-c-no"
+                                src="https://assets.ycodeapp.com/assets/app17394/images/wR0wpS9fOc0XBd6UYs3q9eAbDpCwdLjfVfKcSKXX.png"
                                 alt="Avatar"/>
-                            <AvatarFallback>CN</AvatarFallback>
+                            <AvatarFallback>CM</AvatarFallback>
                         </Avatar>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="mr-4 w-40">
