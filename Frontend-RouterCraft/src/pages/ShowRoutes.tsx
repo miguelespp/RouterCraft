@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {GoogleMap, Polyline} from "@react-google-maps/api";
 import {ApiInstance} from "../Services/Api";
-import {Table, TableBody, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {MdDelete} from "react-icons/md";
 import {Button} from "@/components/ui/button.tsx";
 
@@ -76,7 +76,7 @@ const ShowRoutes = () => {
     }
 
     return (
-        <div className="p-4">
+        <div className="p-4 rounded-md">
             <h1 className="text-2xl mb-4">Operations List</h1>
             <Table className={"border-2 rounded"}>
                 <TableHeader className={"bg-blue-500"}>
@@ -91,25 +91,25 @@ const ShowRoutes = () => {
                 <TableBody className={"bg-gray-300"}>
                     {operations.map((operation) => (
                         <TableRow key={operation.id}>
-                            <TableHead className={"text-center"}>{operation.id}</TableHead>
-                            <TableHead className={"text-center"}>{operation.name}</TableHead>
-                            <TableHead className={"text-center"}>{operation.created_at.split('T')[0]}</TableHead>
-                            <TableHead className={"text-center"}>
+                            <TableCell>{operation.id}</TableCell>
+                            <TableCell>{operation.name}</TableCell>
+                            <TableCell>{operation.created_at.split('T')[0]}</TableCell>
+                            <TableCell>
                                 <Button
                                     className="bg-blue-500 text-white"
                                     onClick={() => handleShowRoutes(operation.id)}
                                 >
                                     Show Routes
                                 </Button>
-                            </TableHead>
-                            <TableHead className={"text-center"}>
+                            </TableCell>
+                            <TableCell>
                                 <Button variant={"destructive"}
                                     onClick={() => handleDeleteOperation(operation.id)}
                                 >
                                     <MdDelete
                                         className={"w-5 h-5"}/>
                                 </Button>
-                            </TableHead>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
