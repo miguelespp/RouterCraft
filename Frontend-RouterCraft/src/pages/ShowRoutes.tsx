@@ -4,6 +4,14 @@ import {ApiInstance} from "../Services/Api";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {MdDelete} from "react-icons/md";
 import {Button} from "@/components/ui/button.tsx";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog.tsx";
 
 interface Operation {
     id: number;
@@ -95,12 +103,40 @@ const ShowRoutes = () => {
                             <TableCell>{operation.name}</TableCell>
                             <TableCell>{operation.created_at.split('T')[0]}</TableCell>
                             <TableCell>
-                                <Button
-                                    className="bg-blue-500 text-white"
-                                    onClick={() => handleShowRoutes(operation.id)}
-                                >
-                                    Show Routes
-                                </Button>
+                                <Dialog>
+                                    <DialogTrigger>
+                                        <Button
+                                            className="bg-blue-500 text-white"
+                                            onClick={() => handleShowRoutes(operation.id)}
+                                        >
+                                            Show Routes
+                                        </Button>
+
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>Your route </DialogTitle>
+                                            <DialogDescription>Estado actual de la ruta {selectedOperationId}</DialogDescription>
+                                        </DialogHeader>
+                                        <GoogleMap
+                                            mapContainerStyle={{width: "100%", height: "400px"}}
+                                            center={{lat: -12.0547, lng: -77.057}}
+                                            zoom={14}
+                                        >
+                                            {Object.keys(routes).map((key, index) => (
+                                                <Polyline
+                                                    key={index}
+                                                    path={routes[key]}
+                                                    options={{
+                                                        strokeColor: `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`,
+                                                        strokeOpacity: 1.0,
+                                                        strokeWeight: 2,
+                                                    }}
+                                                />
+                                            ))}
+                                        </GoogleMap>
+                                    </DialogContent>
+                                </Dialog>
                             </TableCell>
                             <TableCell>
                                 <Button variant={"destructive"}
@@ -115,31 +151,8 @@ const ShowRoutes = () => {
                 </TableBody>
             </Table>
 
-            {selectedOperationId && (
-                <div className="mt-8">
-                    <h2 className="text-xl mb-4">
-                        Routes for Operation ID: {selectedOperationId}
-                    </h2>
-                    <GoogleMap
-                        mapContainerStyle={{width: "100%", height: "400px"}}
-                        center={{lat: -12.0547, lng: -77.057}}
-                        zoom={14}
-                    >
-                        {Object.keys(routes).map((key, index) => (
-                            <Polyline
-                                key={index}
-                                path={routes[key]}
-                                options={{
-                                    strokeColor: `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`,
-                                    strokeOpacity: 1.0,
-                                    strokeWeight: 2,
-                                }}
-                            />
-                        ))}
-                    </GoogleMap>
 
-                </div>
-            )}
+
         </div>
     );
 };
