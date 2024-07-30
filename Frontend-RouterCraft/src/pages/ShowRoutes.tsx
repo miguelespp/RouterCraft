@@ -9,8 +9,7 @@ import {
     DialogContent,
     DialogDescription,
     DialogHeader,
-    DialogTitle,
-    DialogTrigger
+    DialogTitle
 } from "@/components/ui/dialog.tsx";
 
 interface Operation {
@@ -32,6 +31,8 @@ const ShowRoutes = () => {
     const [selectedOperationId, setSelectedOperationId] = useState<number | null>(
         null
     );
+    const [storagePosition, setStoragePosition] = useState({lat: -12.0547, lng: -77.057});
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     useEffect(() => {
         const fetchOperations = async () => {
@@ -47,11 +48,13 @@ const ShowRoutes = () => {
     }, []);
 
     const handleShowRoutes = async (operationId: number) => {
-        // window.location.reload();
+        setRoutes({});
         try {
+            setDialogOpen(true);
             setSelectedOperationId(operationId);
             const response = await ApiInstance.post<{
                 routes: { [key: string]: Route[] };
+                storage: { lat: number; lng: number};
             }>("/operations/routes", {operation_id: operationId});
             const routesData = response.data.routes || {};
 
@@ -65,7 +68,10 @@ const ShowRoutes = () => {
                     })),
                 ])
             );
+            const storage = response.data.storage;
+            setStoragePosition(storage);
             setRoutes(parsedRoutes);
+            console.log(routes)
         } catch (error) {
             console.error("Error fetching routes:", error);
             setRoutes({});
@@ -103,8 +109,7 @@ const ShowRoutes = () => {
                             <TableCell>{operation.name}</TableCell>
                             <TableCell>{operation.created_at.split('T')[0]}</TableCell>
                             <TableCell>
-                                <Dialog>
-                                    <DialogTrigger>
+
                                         <Button
                                             className="bg-blue-500 text-white"
                                             onClick={() => handleShowRoutes(operation.id)}
@@ -112,35 +117,10 @@ const ShowRoutes = () => {
                                             Show Routes
                                         </Button>
 
-                                    </DialogTrigger>
-                                    <DialogContent>
-                                        <DialogHeader>
-                                            <DialogTitle>Your route </DialogTitle>
-                                            <DialogDescription>Estado actual de la ruta {selectedOperationId}</DialogDescription>
-                                        </DialogHeader>
-                                        <GoogleMap
-                                            mapContainerStyle={{width: "100%", height: "400px"}}
-                                            center={{lat: -12.0547, lng: -77.057}}
-                                            zoom={14}
-                                        >
-                                            {Object.keys(routes).map((key, index) => (
-                                                <Polyline
-                                                    key={index}
-                                                    path={routes[key]}
-                                                    options={{
-                                                        strokeColor: `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`,
-                                                        strokeOpacity: 1.0,
-                                                        strokeWeight: 2,
-                                                    }}
-                                                />
-                                            ))}
-                                        </GoogleMap>
-                                    </DialogContent>
-                                </Dialog>
                             </TableCell>
                             <TableCell>
                                 <Button variant={"destructive"}
-                                    onClick={() => handleDeleteOperation(operation.id)}
+                                        onClick={() => handleDeleteOperation(operation.id)}
                                 >
                                     <MdDelete
                                         className={"w-5 h-5"}/>
@@ -150,9 +130,32 @@ const ShowRoutes = () => {
                     ))}
                 </TableBody>
             </Table>
-
-
-
+            <Dialog open={dialogOpen} onOpenChange={() => setDialogOpen(false)}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Your route </DialogTitle>
+                        <DialogDescription>Estado actual de la ruta {selectedOperationId}</DialogDescription>
+                    </DialogHeader>
+                    <GoogleMap
+                        clickableIcons={false}
+                        mapContainerStyle={{width: "100%", height: "400px"}}
+                        center={storagePosition}
+                        zoom={14}
+                    >
+                        {Object.keys(routes).map((key, index) => (
+                            <Polyline
+                                key={index}
+                                path={routes[key]}
+                                options={{
+                                    strokeColor: `hsl(${Math.floor(Math.random() * 360)}, 70%, 50%)`,
+                                    strokeOpacity: 1.0,
+                                    strokeWeight: 2,
+                                }}
+                            />
+                        ))}
+                    </GoogleMap>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 };

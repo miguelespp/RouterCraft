@@ -44,7 +44,7 @@ class OperationController extends Controller
         }
         $api_coord = implode('|', $coord);
         $matrixDistance = $this->getMatrixDistance($api_coord);
-    
+
         $routes = $this->clarkeWrightAlgorithm($matrixDistance, $nVehicles);
         $routes = array_map(function ($route) use ($coord) {
             return array_map(function ($node) use ($coord) {
@@ -55,10 +55,16 @@ class OperationController extends Controller
                 ];
             }, $route);
         }, $routes);
-    
-        return response()->json(['routes' => $routes], 200);
+
+        return response()->json([
+            'routes' => $routes,
+            'storage' => [
+                'lat' => $storage['latitude'],
+                'lng' => $storage['longitude'],
+            ],
+        ], 200);
     }
-    
+
 
     public function store(StoreRequest $request)
     {

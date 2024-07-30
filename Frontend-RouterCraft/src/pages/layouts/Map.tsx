@@ -150,6 +150,7 @@ const Mapa: React.FC = () => {
         <div className="flex justify-center items-center h-[80vh] m-3">
             <GoogleMap
                 mapContainerStyle={containerStyle}
+                clickableIcons={false}
                 center={center}
                 zoom={15}
                 onClick={handleMapClick}
