@@ -18,9 +18,11 @@ Route::prefix('auth')->group(function(){
 
 Route::middleware('jwt.verify')->group(function(){
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::get('users', [UserController::class, 'index']);
+//    Route::get('users', [UserController::class, 'index']);
+    Route::get('user', [UserController::class, 'show']);
+    Route::put('user', [UserController::class, 'update']);
     Route::delete('user', [UserController::class, 'destroy']);
-    
+
     //Manejar operaciones
     // obtienes un arreglo de operaciones  (primero)
     Route::get('operations', [OperationController::class, 'index']);

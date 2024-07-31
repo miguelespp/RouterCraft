@@ -17,15 +17,26 @@ class UserController extends Controller
 
     public function show(Request $request)
     {
-        $user = User::find($request->user->id);
+        $user = User::find($request->user()->id);
+
         return response()->json(compact('user'), 200);
     }
 
     public function update(Request $request)
     {
         $user = User::find($request->user->id);
-        $user->update($request->all());
-        return response()->json(compact('user'), 200);
+        $data = array_filter($request->all(), function($value) {
+            return !is_null($value) && $value !== '';
+        });
+        $user->update($data);
+        $user->refresh();
+
+        $authorizationHeader = $request->header('Authorization');
+        $token = str_replace('Bearer ', '', $authorizationHeader);
+        JWTAuth::invalidate($token);
+
+        $token = JWTAuth::fromUser($user);
+        return response()->json(compact('user', 'token'), 200);
     }
 
     public function destroy(Request $request)
