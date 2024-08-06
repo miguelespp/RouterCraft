@@ -4,6 +4,13 @@ import {ApiInstance} from "../Services/Api";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {MdDelete} from "react-icons/md";
 import {Button} from "@/components/ui/button.tsx";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle
+} from "@/components/ui/dialog.tsx";
 
 interface Operation {
     id: number;
@@ -24,6 +31,8 @@ const ShowRoutes = () => {
     const [selectedOperationId, setSelectedOperationId] = useState<number | null>(
         null
     );
+    const [storagePosition, setStoragePosition] = useState({lat: -12.0547, lng: -77.057});
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     useEffect(() => {
         const fetchOperations = async () => {
@@ -39,11 +48,13 @@ const ShowRoutes = () => {
     }, []);
 
     const handleShowRoutes = async (operationId: number) => {
-        // window.location.reload();
+        setRoutes({});
         try {
+            setDialogOpen(true);
             setSelectedOperationId(operationId);
             const response = await ApiInstance.post<{
                 routes: { [key: string]: Route[] };
+                storage: { lat: number; lng: number};
             }>("/operations/routes", {operation_id: operationId});
             const routesData = response.data.routes || {};
 
@@ -57,7 +68,10 @@ const ShowRoutes = () => {
                     })),
                 ])
             );
+            const storage = response.data.storage;
+            setStoragePosition(storage);
             setRoutes(parsedRoutes);
+            console.log(routes)
         } catch (error) {
             console.error("Error fetching routes:", error);
             setRoutes({});
@@ -95,16 +109,18 @@ const ShowRoutes = () => {
                             <TableCell>{operation.name}</TableCell>
                             <TableCell>{operation.created_at.split('T')[0]}</TableCell>
                             <TableCell>
-                                <Button
-                                    className="bg-blue-500 text-white"
-                                    onClick={() => handleShowRoutes(operation.id)}
-                                >
-                                    Show Routes
-                                </Button>
+
+                                        <Button
+                                            className="bg-blue-500 text-white"
+                                            onClick={() => handleShowRoutes(operation.id)}
+                                        >
+                                            Show Routes
+                                        </Button>
+
                             </TableCell>
                             <TableCell>
                                 <Button variant={"destructive"}
-                                    onClick={() => handleDeleteOperation(operation.id)}
+                                        onClick={() => handleDeleteOperation(operation.id)}
                                 >
                                     <MdDelete
                                         className={"w-5 h-5"}/>
@@ -114,15 +130,16 @@ const ShowRoutes = () => {
                     ))}
                 </TableBody>
             </Table>
-
-            {selectedOperationId && (
-                <div className="mt-8">
-                    <h2 className="text-xl mb-4">
-                        Routes for Operation ID: {selectedOperationId}
-                    </h2>
+            <Dialog open={dialogOpen} onOpenChange={() => setDialogOpen(false)}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Your route </DialogTitle>
+                        <DialogDescription>Estado actual de la ruta {selectedOperationId}</DialogDescription>
+                    </DialogHeader>
                     <GoogleMap
+                        clickableIcons={false}
                         mapContainerStyle={{width: "100%", height: "400px"}}
-                        center={{lat: -12.0547, lng: -77.057}}
+                        center={storagePosition}
                         zoom={14}
                     >
                         {Object.keys(routes).map((key, index) => (
@@ -137,9 +154,8 @@ const ShowRoutes = () => {
                             />
                         ))}
                     </GoogleMap>
-
-                </div>
-            )}
+                </DialogContent>
+            </Dialog>
         </div>
     );
 };

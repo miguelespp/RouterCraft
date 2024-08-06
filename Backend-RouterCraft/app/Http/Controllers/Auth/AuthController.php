@@ -41,6 +41,15 @@ class AuthController extends Controller
         ], 200);
     }
 
+    public function refresh(Request $request)
+    {
+        $token = JWTAuth::refresh(JWTAuth::getToken());
+        return response()->json([
+            'success' => true,
+            'token' => $token
+        ], 200);
+    }
+
 //    function getUser(\Illuminate\Http\Request $request)
 //    {
 //
