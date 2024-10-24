@@ -14,12 +14,21 @@ RouterCraft is a route mapping project built with Laravel and React.
 - Backend: Laravel with JWT authentication
 - Frontend: React
 
+# Requirements
+
+- PHP 8.3 or higher
+- Node.js 20 or higher
+- Composer
+- MySQL or PostgreSQL
+- A google maps API key
+
+
 ## Installation
 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/RouterCraft.git
+    git clone https://github.com/miguelespp/RouterCraft.git
     ```
 
 2. Install the backend dependencies:
@@ -37,17 +46,22 @@ RouterCraft is a route mapping project built with Laravel and React.
     php artisan migrate
     ```
 
-4. Install the frontend dependencies:
+4. Start Laravel serve
+
+    ```bash
+    php artisan serve
+    ```
+
+5. Install the frontend dependencies:
 
     ```bash
     cd ../Frontend-RouterCraft
     npm install
     ```
 
-5. Start the development server:
+6. Start the development server:
 
     ```bash
-    php artisan serve
     npm run dev
     ```
 
