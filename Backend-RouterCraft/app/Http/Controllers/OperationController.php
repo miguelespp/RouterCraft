@@ -74,7 +74,7 @@ class OperationController extends Controller
             'user_id' => $request->user()->id,
             // 'user_id' => $request->user->id,
         ]);
-        $storage = Storage::create([
+        Storage::create([
             'name' => $request->storage['name'],
             'latitude' => $request->storage['latitude'],
             'longitude' => $request->storage['longitude'],
