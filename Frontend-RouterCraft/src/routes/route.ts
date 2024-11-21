@@ -8,54 +8,62 @@ import BaseDashBoard from "../pages/layouts/BaseDashBoard";
 import ShowRoutes from "../pages/ShowRoutes";
 import Profile from "@/pages/Profile.tsx";
 import Settings from "@/pages/Settings.tsx";
+import Inventory from "@/pages/Inventory";
+import ProductView from "@/pages/Products";
 
 export interface RouteInterface {
-    path: string;
-    element: () => JSX.Element;
-    children?: RouteInterface[];
-    errorElement?: () => JSX.Element;
+  path: string;
+  element: () => JSX.Element;
+  children?: RouteInterface[];
+  errorElement?: () => JSX.Element;
 }
 
-export const routes : RouteInterface[] = [
-    {
-        path: "/",
-        element: Welcome,
-        errorElement: Error,
-        
-    },
-    {
-        path: "/register",
-        element: Register,
-        
-    },
-    {
-        path: "/login",
-        element: Login
-    },
-    {
-        path: "/dashboard",
-        element: BaseDashBoard,
-        children: [
-            {
-                path: "",
-                element: Customers,
-            },
-            {
-                path: "vehicle",
-                element: AddVehicle
-            },
-            {
-                path: "routes",
-                element: ShowRoutes
-            },
-            {
-                path: "profile",
-                element: Profile
-            },
-            {
-                path: "settings",
-                element: Settings
-            }
-        ],
-    },
-]
+export const routes: RouteInterface[] = [
+  {
+    path: "/",
+    element: Welcome,
+    errorElement: Error,
+  },
+  {
+    path: "/register",
+    element: Register,
+  },
+  {
+    path: "/login",
+    element: Login,
+  },
+  {
+    path: "/dashboard",
+    element: BaseDashBoard,
+    children: [
+      {
+        path: "",
+        element: Customers,
+      },
+      {
+        path: "vehicle",
+        element: AddVehicle,
+      },
+      {
+        path: "routes",
+        element: ShowRoutes,
+      },
+      {
+        path: "inventory",
+        element: Inventory,
+      },
+      {
+        path: "product",
+        element: ProductView,
+      },
+      {
+        path: "profile",
+        element: Profile,
+      },
+      {
+        path: "settings",
+        element: Settings,
+      },
+    ],
+  },
+];
